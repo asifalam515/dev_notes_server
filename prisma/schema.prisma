@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum NoteStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+
+
+model User {
+  id        String     @id @default(uuid())
+  name      String
+  email     String     @unique
+  password  String
+  avatar    String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  notes     Note[]
+  resources Resource[]
+}
+
+
+
+model Note {
+  id        String     @id @default(uuid())
+  title     String
+  content   String
+  status    NoteStatus @default(ACTIVE)
+
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+
+  tags      NoteTag[]
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([userId])
+}
+
+
+
+model Tag {
+  id    String @id @default(uuid())
+  name  String @unique
+
+  notes NoteTag[]
+}
+
+
+
+model NoteTag {
+  noteId String
+  tagId  String
+
+  note   Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([noteId, tagId])
+}
+
+
+
+model Resource {
+  id          String   @id @default(uuid())
+  title       String
+  link        String
+  description String?
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
