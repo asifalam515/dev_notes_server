@@ -1,4 +1,7 @@
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import express, { Application, Request, Response } from "express";
+import { AuthRouter } from "./app/module/Auth/auth.router";
 const app: Application = express();
 const port = 5000; // The port your express server will be running on.
 
@@ -7,6 +10,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
+// routers
+app.use("/api/v1/auth", AuthRouter.router);
 
 // Basic route
 app.get("/", (req: Request, res: Response) => {

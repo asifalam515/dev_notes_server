@@ -15,3 +15,12 @@ export const NoteStatus = {
 } as const
 
 export type NoteStatus = (typeof NoteStatus)[keyof typeof NoteStatus]
+
+
+export const Role = {
+  ADMIN: 'ADMIN',
+  USER: 'USER',
+  MODERATOR: 'MODERATOR'
+} as const
+
+export type Role = (typeof Role)[keyof typeof Role]
