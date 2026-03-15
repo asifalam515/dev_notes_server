@@ -17,6 +17,15 @@ export const NoteStatus = {
 export type NoteStatus = (typeof NoteStatus)[keyof typeof NoteStatus]
 
 
+export const Status = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  BLOCKED: 'BLOCKED'
+} as const
+
+export type Status = (typeof Status)[keyof typeof Status]
+
+
 export const Role = {
   ADMIN: 'ADMIN',
   USER: 'USER',
